@@ -1,0 +1,29 @@
+pipeline {
+    agent {
+        label 'brx-kubectl-slave'
+    }
+    
+     tools {
+        maven 'maven1'
+    } 
+
+  stages {     
+    stage('Build Docker Image') {
+            steps {
+                sh label: '', script: '''echo sbhaisar
+                                ls -ltr
+                            docker build -t  myimage:dev .
+                            '''
+            }    
+        }
+    
+    stage('Start Docker Container') {
+            steps {
+                sh label: '', script: '''
+                            docker run --name maventest_container myimage:dev
+                            '''
+            }    
+        }
+            
+    }  //stages
+}  //pipeline
